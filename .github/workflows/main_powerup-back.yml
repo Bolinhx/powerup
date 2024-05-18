@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy Node.js app to Azure Web App - powerup-back
 
 on:
@@ -42,7 +39,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
+      id-token: write # This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
@@ -52,13 +49,17 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-      
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_817BDBA5440C49EF8DD83B841D0A0678 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2F06DCA8CA4B4DB88D6A4254B3C3DAF7 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A8E65B87C97F4D42AC2AA0B9D0410CFF }}
+
+      - name: Set Azure Web App environment variables
+        run: |
+          az webapp config appsettings set --name 'powerup-back' --resource-group 'YOUR_RESOURCE_GROUP' --settings DB_SERVER=${{ secrets.DB_SERVER }} DB_NAME=${{ secrets.DB_NAME }} DB_USER=${{ secrets.DB_USER }} DB_PASS=${{ secrets.DB_PASS }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -67,4 +68,3 @@ jobs:
           app-name: 'powerup-back'
           slot-name: 'Production'
           package: .
-          
