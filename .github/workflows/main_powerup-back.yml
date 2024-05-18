@@ -57,10 +57,6 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2F06DCA8CA4B4DB88D6A4254B3C3DAF7 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A8E65B87C97F4D42AC2AA0B9D0410CFF }}
 
-      - name: Set Azure Web App environment variables
-        run: |
-          az webapp config appsettings set --name 'powerup-back' --resource-group 'YOUR_RESOURCE_GROUP' --settings DB_SERVER=${{ secrets.DB_SERVER }} DB_NAME=${{ secrets.DB_NAME }} DB_USER=${{ secrets.DB_USER }} DB_PASS=${{ secrets.DB_PASS }}
-
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
