@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
 router.get('/validar/:codigo_ativacao', async (req, res) => {
   const { codigo_ativacao } = req.params;
   try {
-    const user = await usuariosRepository.findByActivationCode(codigo_ativacao);
+    const user = await usuariosRepository.verifyIfActivationCodeExists(codigo_ativacao);
     if (user) {
       res.status(200).send({ message: 'Codigo e valido.' });
     } else {
