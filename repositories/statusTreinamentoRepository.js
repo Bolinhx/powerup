@@ -6,7 +6,7 @@ class StatusTreinamentoRepository extends BaseRepository {
     super('status_treinamento'); // Nome da tabela deve corresponder ao nome no script SQL
   }
 
-  // Adicione métodos específicos de StatusTreinamento aqui, se necessário
+  // Metodos especificos
 }
 
 module.exports = new StatusTreinamentoRepository();

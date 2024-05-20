@@ -6,7 +6,7 @@ class StatusMentoriaRepository extends BaseRepository {
     super('status_mentoria'); // Nome da tabela deve corresponder ao nome no script SQL
   }
 
-  // Adicione métodos específicos de StatusMentoria aqui, se necessário
+  // Metodos especificos
 }
 
 module.exports = new StatusMentoriaRepository();
