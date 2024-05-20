@@ -1,5 +1,6 @@
 // repositories/mentoriaRepository.js
 const BaseRepository = require('./baseRepository');
+const { poolPromise, sql } = require('../config/db');
 
 class MentoriaRepository extends BaseRepository {
   constructor() {
@@ -55,6 +56,43 @@ class MentoriaRepository extends BaseRepository {
           FROM mentoria m
           JOIN usuarios u ON m.id_usuario = u.id
           WHERE m.id_mentor = @id_mentor
+        `);
+      return result.recordset;
+    } catch (error) {
+      console.error('Error fetching mentorados by mentor id:', error);
+      throw error;
+    }
+  }
+
+  async getMentoradosPendentesByMentorId(mentorId) {
+    try {
+      const pool = await sql.connect(this.config);
+      const result = await pool.request()
+        .input('id_mentor', sql.Int, mentorId)
+        .query(`
+          SELECT u.*
+          FROM mentoria m
+          JOIN usuarios u ON m.id_usuario = u.id
+          WHERE m.id_mentor = @id_mentor
+          AND m.id_status_mentoria = 3
+        `);
+      return result.recordset;
+    } catch (error) {
+      console.error('Error fetching mentorados by mentor id:', error);
+      throw error;
+    }
+  }
+  async getMentoriasPendentesByUsuario(usuarioId) {
+    try {
+      const pool = await sql.connect(this.config);
+      const result = await pool.request()
+        .input('id_usuario', sql.Int, usuarioId)
+        .query(`
+          SELECT u.*
+          FROM mentoria m
+          JOIN usuarios u ON m.id_usuario = u.id
+          WHERE m.id_usuario = @id_usuario
+          AND m.id_status_mentoria = 3
         `);
       return result.recordset;
     } catch (error) {

@@ -39,6 +39,17 @@ router.get('/validar/:codigo_ativacao', async (req, res) => {
   }
 });
 
+// GET: Obter flag_mentor_ativo por usuario
+router.get('/statusmentor/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const flag_mentor_ativo = await usuariosRepository.getStatusMentorById(id);
+    res.json(flag_mentor_ativo);
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
 // POST: Criar um novo usuário
 router.post('/', async (req, res) => {
   try {

@@ -13,6 +13,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET: Listar todos os mentores dentro de Usuarios
+router.get('/nomesMentores/', async (req, res) => {
+  try {
+    const mentores = await mentorRepository.getAllMentores();
+    res.json(mentores);
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
 // GET: Obter um mentor por ID
 router.get('/:id', async (req, res) => {
   const { id } = req.params;

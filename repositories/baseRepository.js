@@ -28,6 +28,30 @@ class BaseRepository {
     }
   }
 
+  async getStatusMentorById(id) {
+    try {
+      const pool = await poolPromise;
+      const result = await pool.request()
+        .input('id', sql.Int, id)
+        .query(`SELECT flag_mentor_ativo FROM ${this.tableName} WHERE id = @id`);
+      return result.recordset[0];
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
+
+  async getByStatusId(id) {
+    try {
+      const pool = await poolPromise;
+      const result = await pool.request()
+        .input('id', sql.Int, id)
+        .query(`SELECT * FROM ${this.tableName} WHERE id_status_treinamento = @id`);
+      return result.recordset[0];
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
+
   async create(data) {
     const columns = Object.keys(data).join(', ');
     const values = Object.keys(data).map((key, index) => `@${key}`).join(', ');

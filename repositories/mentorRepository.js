@@ -1,5 +1,6 @@
 // repositories/mentorRepository.js
 const BaseRepository = require('./baseRepository');
+const { poolPromise, sql } = require('../config/db');
 
 class MentorRepository extends BaseRepository {
   constructor() {
@@ -21,6 +22,16 @@ class MentorRepository extends BaseRepository {
     } else {
       // Mentor does not exist, insert a new record
       await this.insertMentor(userId);
+    }
+  }
+
+  async getAllMentores() {
+    try {
+      const pool = await poolPromise;
+      const result = await pool.request().query(`SELECT ${this.tableName}.id,usuarios.nome FROM ${this.tableName} LEFT JOIN usuarios ON usuarios.id = ${this.tableName}.id_usuario WHERE usuarios.flag_mentor_ativo = 1`);
+      return result.recordset;
+    } catch (err) {
+      throw new Error(err.message);
     }
   }
 }

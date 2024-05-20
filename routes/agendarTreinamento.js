@@ -24,6 +24,17 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+//GET : Obter todos os agendamentos de um determinado status
+router.get('/filtro/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const treinamento = await agendarTreinamentoRepository.getByStatusId(id);
+    res.json(treinamento);
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
 // POST: Criar um novo agendamento de treinamento
 router.post('/', async (req, res) => {
   try {

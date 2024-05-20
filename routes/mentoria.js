@@ -65,7 +65,7 @@ router.get('/getMentoriaByUserAndMentor/:userId/:mentorId', async (req, res) => 
   }
 
   try {
-    const mentoria = await mentoriaRepo.getMentoriaByUserAndMentor(userId, mentorId);
+    const mentoria = await mentoriaRepository.getMentoriaByUserAndMentor(userId, mentorId);
     if (!mentoria) {
       return res.status(404).send('Mentoria not found');
     }
@@ -84,7 +84,7 @@ router.post('/escolherMentor', async (req, res) => {
   }
 
   try {
-    await mentoriaRepo.escolherMentor(userId, mentorId);
+    await mentoriaRepository.escolherMentor(userId, mentorId);
     res.status(200).send('Mentorship relationship created successfully');
   } catch (error) {
     console.error('Error in escolherMentor route:', error);
@@ -95,7 +95,7 @@ router.post('/escolherMentor', async (req, res) => {
     }
   }
 });
-
+// Acept or reject mentoria
 router.post('/aceitarReprovarMentorado', async (req, res) => {
   const { userId, mentorId, status } = req.body; // Expecting userId, mentorId, and status in the request body
 
@@ -113,7 +113,7 @@ router.post('/aceitarReprovarMentorado', async (req, res) => {
   }
 
   try {
-    await mentoriaRepo.updateMentoriaStatus(userId, mentorId, statusMentoriaId);
+    await mentoriaRepository.updateMentoriaStatus(userId, mentorId, statusMentoriaId);
     res.status(200).send(`Mentorship relationship ${status}`);
   } catch (error) {
     console.error('Error in aceitarReprovarMentorado route:', error);
@@ -130,9 +130,47 @@ router.get('/mostrarMentorados/:mentorId', async (req, res) => {
   }
 
   try {
-    const mentorados = await mentoriaRepo.getMentoradosByMentorId(mentorId);
+    const mentorados = await mentoriaRepository.getMentoradosByMentorId(mentorId);
     if (!mentorados.length) {
       return res.status(404).send('No mentorados found for this mentor');
+    }
+    res.status(200).json(mentorados);
+  } catch (error) {
+    console.error('Error in mostrarMentorados route:', error);
+    res.status(500).send('Internal server error');
+  }
+});
+// Route to show mentorados pendentes of a mentor
+router.get('/mostrarMentoradosPendentes/:mentorId', async (req, res) => {
+  const mentorId = parseInt(req.params.mentorId, 10);
+
+  if (isNaN(mentorId)) {
+    return res.status(400).send('Invalid mentorId');
+  }
+
+  try {
+    const mentorados = await mentoriaRepository.getMentoradosByMentorId(mentorId);
+    if (!mentorados.length) {
+      return res.status(404).send('No mentorados found for this mentor');
+    }
+    res.status(200).json(mentorados);
+  } catch (error) {
+    console.error('Error in mostrarMentorados route:', error);
+    res.status(500).send('Internal server error');
+  }
+});
+// Route to show mentorias pendentes of a usuario
+router.get('/mostrarMentoriasPendentes/:usuarioId', async (req, res) => {
+  const mentorId = parseInt(req.params.usuarioIdId, 10);
+
+  if (isNaN(mentorId)) {
+    return res.status(400).send('Invalid mentorId');
+  }
+
+  try {
+    const mentorados = await mentoriaRepository.getMentoriasPendentesByUsuario(mentorId);
+    if (!mentorados.length) {
+      return res.status(404).send('No mentorias found for this usuario');
     }
     res.status(200).json(mentorados);
   } catch (error) {
