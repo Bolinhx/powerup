@@ -6,7 +6,7 @@ class FeedbackMentorRepository extends BaseRepository {
     super('feedback_mentor'); // Nome da tabela deve corresponder ao nome no script SQL
   }
 
-  // Adicione métodos específicos de FeedbackMentor aqui, se necessário
+  // Metodos especificos
 }
 
 module.exports = new FeedbackMentorRepository();

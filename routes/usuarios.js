@@ -24,6 +24,21 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+//GET: Obter um usuário por codigo de ativação
+router.get('/validar/:codigo_ativacao', async (req, res) => {
+  const { codigo_ativacao } = req.params;
+  try {
+    const user = await usuariosRepository.findByActivationCode(codigo_ativacao);
+    if (user) {
+      res.status(200).send({ message: 'Codigo e valido.' });
+    } else {
+      res.status(404).send({ message: 'Codigo nao e valido.' });
+    }
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
 // POST: Criar um novo usuário
 router.post('/', async (req, res) => {
   try {
