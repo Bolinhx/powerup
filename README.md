@@ -11,11 +11,11 @@ Azure MySQL<br>
 Azure App Services (CI/CD)
 
 ## Caso queira rodar ela localmente
-Clone o repositorio
-rode no terminal "npm install"
-configure o banco em config/db.js com as chaves de acesso que estão no arquivo que recebeu por email do CAMP
-em seguida de o comando "npm start"
-Ela vai estar rodando na porta 3000
+Clone o repositorio<br>
+rode no terminal "npm install"<br>
+configure o banco em config/db.js com as chaves de acesso que estão no arquivo que recebeu por email do CAMP<br>
+em seguida de o comando "npm start"<br>
+Ela vai estar rodando na porta 3000<br>
 
 ## Modelo de Entidade Relacional
 O diagrama foi criado usando o DBdiagram, para facilitar a exportação para o SQLClient(Dbaver)
