@@ -1,8 +1,6 @@
 
 # powerup
-PowerUp é uma API REST desenvolvida para gerir o banco da aplicação "Compart" , todas as rotas, com seus endpoits e descrições estão documentadas aqui:
-
-[Documentação API](https://documenter.getpostman.com/view/35066383/2sA3QngYjE#6f2f0699-ca5d-4532-a60f-a69ee31166bf)
+PowerUp é uma API REST desenvolvida para gerir o banco da aplicação "Compart" , todas as rotas, com seus endpoits e descrições estão no link que enviei no email do CAMP
 
 ## Tecnologias Utilizadas
 Node.js<br>
