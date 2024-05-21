@@ -24,26 +24,26 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST: Criar uma nova mentoria
-router.post('/', async (req, res) => {
-  try {
-    await mentoriaRepository.create(req.body);
-    res.status(201).send({ message: 'Mentoria criada com sucesso' });
-  } catch (err) {
-    res.status(500).send({ message: err.message });
-  }
-});
+// // POST: Criar uma nova mentoria
+// router.post('/', async (req, res) => {
+//   try {
+//     await mentoriaRepository.create(req.body);
+//     res.status(201).send({ message: 'Mentoria criada com sucesso' });
+//   } catch (err) {
+//     res.status(500).send({ message: err.message });
+//   }
+// });
 
 // PUT: Atualizar uma mentoria
-router.put('/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    await mentoriaRepository.update(id, req.body);
-    res.send({ message: 'Mentoria atualizada com sucesso' });
-  } catch (err) {
-    res.status(500).send({ message: err.message });
-  }
-});
+// router.put('/:id', async (req, res) => {
+//   const { id } = req.params;
+//   try {
+//     await mentoriaRepository.update(id, req.body);
+//     res.send({ message: 'Mentoria atualizada com sucesso' });
+//   } catch (err) {
+//     res.status(500).send({ message: err.message });
+//   }
+// });
 
 // DELETE: Deletar uma mentoria
 router.delete('/:id', async (req, res) => {
@@ -56,6 +56,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// GET: Obter uma mentoria por usuario e mentor
 router.get('/getMentoriaByUserAndMentor/:userId/:mentorId', async (req, res) => {
   const userId = parseInt(req.params.userId, 10);
   const mentorId = parseInt(req.params.mentorId, 10);
@@ -76,6 +77,7 @@ router.get('/getMentoriaByUserAndMentor/:userId/:mentorId', async (req, res) => 
   }
 });
 
+// POST: Escolher um mentor
 router.post('/escolherMentor', async (req, res) => {
   const { userId, mentorId } = req.body; // Expecting userId and mentorId in the request body
 
@@ -97,7 +99,7 @@ router.post('/escolherMentor', async (req, res) => {
 });
 // Acept or reject mentoria
 router.post('/aceitarReprovarMentorado', async (req, res) => {
-  const { userId, mentorId, status } = req.body; // Expecting userId, mentorId, and status in the request body
+  const { userId, mentorId, status } = req.body; // Espera userId, mentorId e status no corpo da requisição
 
   if (!userId || !mentorId || !status) {
     return res.status(400).send('userId, mentorId, and status are required');
@@ -105,9 +107,9 @@ router.post('/aceitarReprovarMentorado', async (req, res) => {
 
   let statusMentoriaId;
   if (status === 'approved') {
-    statusMentoriaId = 2; // Replace with the actual id for "approved" status
+    statusMentoriaId = 1; 
   } else if (status === 'rejected') {
-    statusMentoriaId = 3; // Replace with the actual id for "rejected" status
+    statusMentoriaId = 2; 
   } else {
     return res.status(400).send('Invalid status value');
   }
