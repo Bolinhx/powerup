@@ -53,13 +53,8 @@ router.get('/statusmentor/:id', async (req, res) => {
 // POST: Criar um novo usuário
 router.post('/', async (req, res) => {
   try {
-    if(!usuariosRepository.verifyIfActivationCodeExists(req.body.codigo_ativacao)){
-      await usuariosRepository.create(req.body);
-      res.status(201).send({ message: 'Usuário criado com sucesso' });
-    }
-    else{
-      throw new Exception("Este código de ativação já existe!")
-    }
+    await usuariosRepository.create(req.body);
+    res.status(201).send({ message: 'Usuario criado com sucesso' });
   } catch (err) {
     res.status(500).send({ message: err.message });
   }
