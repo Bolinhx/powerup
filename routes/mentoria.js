@@ -105,17 +105,8 @@ router.post('/aceitarReprovarMentorado', async (req, res) => {
     return res.status(400).send('userId, mentorId, and status are required');
   }
 
-  let statusMentoriaId;
-  if (status === 'approved') {
-    statusMentoriaId = 1; 
-  } else if (status === 'rejected') {
-    statusMentoriaId = 2; 
-  } else {
-    return res.status(400).send('Invalid status value');
-  }
-
   try {
-    await mentoriaRepository.updateMentoriaStatus(userId, mentorId, statusMentoriaId);
+    await mentoriaRepository.updateMentoriaStatus(userId, mentorId, status);
     res.status(200).send(`Mentorship relationship ${status}`);
   } catch (error) {
     console.error('Error in aceitarReprovarMentorado route:', error);
@@ -151,7 +142,7 @@ router.get('/mostrarMentoradosPendentes/:mentorId', async (req, res) => {
   }
 
   try {
-    const mentorados = await mentoriaRepository.getMentoradosByMentorId(mentorId);
+    const mentorados = await mentoriaRepository.getMentoradosPendentesByMentorId(mentorId);
     if (!mentorados.length) {
       return res.status(404).send('No mentorados found for this mentor');
     }
@@ -163,7 +154,7 @@ router.get('/mostrarMentoradosPendentes/:mentorId', async (req, res) => {
 });
 // Route to show mentorias pendentes of a usuario
 router.get('/mostrarMentoriasPendentes/:usuarioId', async (req, res) => {
-  const mentorId = parseInt(req.params.usuarioIdId, 10);
+  const mentorId = parseInt(req.params.usuarioId, 10);
 
   if (isNaN(mentorId)) {
     return res.status(400).send('Invalid mentorId');

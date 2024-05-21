@@ -40,6 +40,8 @@ class BaseRepository {
     }
   }
 
+  
+
   async getByStatusId(id) {
     try {
       const pool = await poolPromise;

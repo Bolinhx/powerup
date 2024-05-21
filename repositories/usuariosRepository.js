@@ -18,17 +18,29 @@ class UsuariosRepository extends BaseRepository {
     } catch (err) {
       throw new Error(err.message);
     }
-  //   try{
-  //   const pool = await sql.connect(this.config);
-  //   const result = await pool.request()
-  //     .input('codigo_ativacao', sql.NVarChar, codigo_ativacao)
-  //     .query('SELECT * FROM usuarios WHERE codigo_ativacao = @codigo_ativacao');
     
-  //   return result.recordset[0];
-  //  } catch (error) {
-  //   console.error('Error fetching user by activation code:', error);
-  //   throw error;
-  //   }
+  }
+  async getByIdUsuario(id) {
+    try {
+      const pool = await poolPromise;
+      const result = await pool.request()
+        .input('id', sql.Int, id)
+        .query(`SELECT * FROM usuarios WHERE id = @id`);
+      return result.recordset[0];
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
+  async updateUserStatus(id, flag_mentor_ativo) {
+    try {
+      const pool = await poolPromise;
+      const request = pool.request()
+        .input('id', sql.Int, id)
+        .input('flag_mentor_ativo', sql.Bit, flag_mentor_ativo);
+      await request.query(`UPDATE usuarios SET flag_mentor_ativo = @flag_mentor_ativo WHERE id = @id`);
+    } catch (err) {
+      throw new Error(err.message);
+    }
   }
 }
 

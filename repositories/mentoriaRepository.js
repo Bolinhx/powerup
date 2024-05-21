@@ -9,7 +9,7 @@ class MentoriaRepository extends BaseRepository {
 
   async getMentoriaByUserAndMentor(userId, mentorId) {
     try {
-      const pool = await sql.connect(this.config);
+      const pool = await poolPromise;
       const result = await pool.request()
         .input('id_usuario', sql.Int, userId)
         .input('id_mentor', sql.Int, mentorId)
@@ -30,10 +30,23 @@ class MentoriaRepository extends BaseRepository {
     const statusMentoriaAguardandoId = 2;
     await this.insertMentoria(userId, mentorId, statusMentoriaAguardandoId);
   }
-
+  async insertMentoria(userId, mentorId, statusMentoriaId) {
+    try {
+      const pool = await poolPromise;
+      const result = await pool.request()
+        .input('id_usuario', sql.Int, userId)
+        .input('id_mentor', sql.Int, mentorId)
+        .input('id_status_mentoria', sql.Int, statusMentoriaId)
+        .query('INSERT INTO mentoria (id_usuario,id_mentor,id_status_mentoria) VALUES (@id_usuario,@id_mentor,@id_status_mentoria)');
+      return result.rowsAffected[0];
+    } catch (error) {
+      console.error('Error updating mentoria status:', error);
+      throw error;
+    }
+  }
   async updateMentoriaStatus(userId, mentorId, statusMentoriaId) {
     try {
-      const pool = await sql.connect(this.config);
+      const pool = await poolPromise;
       const result = await pool.request()
         .input('id_usuario', sql.Int, userId)
         .input('id_mentor', sql.Int, mentorId)
@@ -48,7 +61,7 @@ class MentoriaRepository extends BaseRepository {
 
   async getMentoradosByMentorId(mentorId) {
     try {
-      const pool = await sql.connect(this.config);
+      const pool = await poolPromise;
       const result = await pool.request()
         .input('id_mentor', sql.Int, mentorId)
         .query(`
@@ -66,7 +79,7 @@ class MentoriaRepository extends BaseRepository {
 
   async getMentoradosPendentesByMentorId(mentorId) {
     try {
-      const pool = await sql.connect(this.config);
+      const pool = await poolPromise;
       const result = await pool.request()
         .input('id_mentor', sql.Int, mentorId)
         .query(`
@@ -84,15 +97,16 @@ class MentoriaRepository extends BaseRepository {
   }
   async getMentoriasPendentesByUsuario(usuarioId) {
     try {
-      const pool = await sql.connect(this.config);
+      const pool = await poolPromise;
       const result = await pool.request()
         .input('id_usuario', sql.Int, usuarioId)
         .query(`
           SELECT u.*
-          FROM mentoria m
-          JOIN usuarios u ON m.id_usuario = u.id
-          WHERE m.id_usuario = @id_usuario
-          AND m.id_status_mentoria = 3
+          FROM usuarios u 
+          JOIN mentor m ON m.id_usuario = u.id 
+          JOIN mentoria m2 ON m2.id_mentor = m.id 
+          WHERE m2.id_usuario = @id_usuario
+          AND m2.id_status_mentoria = 3
         `);
       return result.recordset;
     } catch (error) {
