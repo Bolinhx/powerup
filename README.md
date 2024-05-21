@@ -5,9 +5,9 @@ PowerUp é uma API REST desenvolvida para gerir o banco da aplicação "Compart"
 [Documentação API](https://documenter.getpostman.com/view/35066383/2sA3QngYjE#6f2f0699-ca5d-4532-a60f-a69ee31166bf)
 
 ## Tecnologias Utilizadas
-Node.js
-Express
-Azure MySQL
+Node.js<br>
+Express<br>
+Azure MySQL<br>
 Azure App Services (CI/CD)
 
 ## Caso queira rodar ela localmente
